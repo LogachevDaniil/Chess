@@ -1,0 +1,42 @@
+.modal {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.4s, visibility 0.4s;
+}
+.modalWindow {
+  width: 500px;
+  height: 500px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+  z-index: 1;
+  transform: scale(0);
+  transition: transform 0.8s;
+}
+.modalButton {
+  border: 0;
+  border-radius: 4px;
+  font-size: large;
+  padding: 5px 20px;
+  margin-top: 50px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.modal.open {
+  visibility: visible;
+  opacity: 1;
+}
+.modal.open .modalWindow {
+  transform: scale(1);
+}
