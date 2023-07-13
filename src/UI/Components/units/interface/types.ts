@@ -1,4 +1,3 @@
-type IFigureType = "PawnWhite" | "PawnDark";
+type IFigureType = "PawnWhite" | "PawnDark" | "PawnWhiteKing" | "PawnDarkKing";
 
-
-export type { IFigureType }
+export type { IFigureType };

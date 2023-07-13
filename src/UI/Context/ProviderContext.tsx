@@ -11,11 +11,31 @@ export const ProviderContextWrapper: FC<IProps> = ({ children }) => {
   const [arrayOfSquares, setArrayOfSquares] = useState<string[][]>(arr);
   const [active, setActive] = useState<boolean>(true);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [winOpen, setWinOpen] = useState<boolean>(false);
+  const [additionalMove, setAdditionalMove] = useState<boolean>(false);
+  const [nextTurn, setNextTurn] = useState<boolean>(true);
+  const chengeAdditionalMove = () => {
+    setAdditionalMove(!additionalMove);
+  };
   const chengeModalActive = () => {
     setModalOpen(!modalOpen);
   };
-  const chengeActive = () => {
-    setActive(!active);
+  const chengeWinActive = () => {
+    setWinOpen(!winOpen);
+  };
+  const chengeActive = (activeType: boolean) => {
+    // activeType && setActive(!active);
+    // activeType && setNextTurn(!nextTurn);
+    // setActive(!active)
+    if (!activeType) {
+      setNextTurn(!nextTurn);
+    } else {
+      setActive(!active);
+    }
+    // console.log(active);
+  };
+  const chengeNextTurn = () => {
+    setNextTurn(!nextTurn);
   };
   // const switchArrayOfSquares = (arr: string[][]) => {
   //   setArrayOfSquares(arr);
@@ -32,6 +52,7 @@ export const ProviderContextWrapper: FC<IProps> = ({ children }) => {
     arrayOfSquares[idy][idx] = "";
     arrayOfSquares[newIdy][newIdx] = figureType;
     setArrayOfSquares(arrayOfSquares);
+    console.log(arrayOfSquares);
   };
 
   const providerValue = {
@@ -41,7 +62,12 @@ export const ProviderContextWrapper: FC<IProps> = ({ children }) => {
     chengeActive,
     modalOpen,
     chengeModalActive,
-    // switchArrayOfSquares,
+    winOpen,
+    chengeWinActive,
+    additionalMove,
+    chengeAdditionalMove,
+    nextTurn,
+    chengeNextTurn,
   };
   return (
     <ProviderContext.Provider value={providerValue}>

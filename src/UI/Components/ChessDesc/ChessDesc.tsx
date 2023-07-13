@@ -1,7 +1,9 @@
 import { Square } from "../square/Square";
+import { Card } from "./card/Card";
+import { Card1 } from "./card1/Card";
 import "./ChessDesc.css";
 import { arrayOfChecker } from "../units/Figure/Figure";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ProviderContext } from "../../Context/ProviderContext";
 import { TitleWhoseTurn } from "./TitleWhoseTurn/TitleWhoseTurn";
 import { ModalWindow } from "./ModalWondow/ModalWindow";
@@ -10,9 +12,9 @@ export const arr: string[][] = Array.from(Array(8), () =>
 );
 
 export const ChessDesc = () => {
-  const { arrayOfSquares } = useContext(ProviderContext);
+  const { arrayOfSquares, nextTurn } = useContext(ProviderContext);
 
-  const figureInArray = () => {
+  (() => {
     for (let i = 0; i < arr.length; i++) {
       for (let y = 0; y < arr[i].length; y++) {
         arr[i][y] = "";
@@ -21,17 +23,17 @@ export const ChessDesc = () => {
     for (let i = 0; i < arrayOfChecker.length; i++) {
       arr[arrayOfChecker[i].positionY][arrayOfChecker[i].positionX] =
         arrayOfChecker[i].figureType;
+
+      if (arrayOfChecker[i].isKing === true) {
+        arr[arrayOfChecker[i].positionY][arrayOfChecker[i].positionX] =
+          arr[arrayOfChecker[i].positionY][arrayOfChecker[i].positionX] +
+          " King";
+      }
     }
-  };
-  figureInArray();
+  })();
+  // console.log(arrayOfSquares);
+  useEffect(() => {}, [nextTurn]);
 
-  // const chengeActivse = () => {
-  //   chengeActive();
-  //   console.log("chenge active " + active);
-  // };
-
-  // setArrayState(arr)
-  // onClick={chengeActivse}
   return (
     <div className="game">
       <TitleWhoseTurn />
@@ -51,6 +53,8 @@ export const ChessDesc = () => {
           ))
         )}
       </div>
+      <Card />
+      <Card1 />
     </div>
   );
 };

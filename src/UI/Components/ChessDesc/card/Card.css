@@ -1,0 +1,35 @@
+.card{
+    height: 300px;
+    width: 250px;
+    position: relative;
+}
+.wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card{
+    perspective: 500px;
+    margin: 25px;
+    
+}
+.front, .back{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: 1s;
+    backface-visibility: hidden;
+    border-radius: 10px;
+}
+.front{
+    background-color: rgb(67, 74, 66);
+}
+.back{
+    background-color: aqua;
+    transform: rotateY(180deg);
+}
+.card:hover .front{transform: rotateY(180deg);}
+.card:hover .back{transform: rotateY(360deg);}

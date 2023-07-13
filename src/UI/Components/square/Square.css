@@ -12,16 +12,33 @@
   background-color: white;
 }
 .PawnWhite {
+  transition: 0.5s;
   height: 70px;
   width: 70px;
-  background-color: rgb(255, 255, 255);
+  /* background-color: rgb(255, 255, 255); */
+  background-color: rgba(215, 207, 202, 1);
+  background-image: url("./img/checkerWhite.svg");
+  background-position: center;
+  background-size: cover;
   border-radius: 50%;
 }
+.PawnDark:hover, .PawnWhite:hover{
+  transform: scale3d(1.1,1.1,1.1);
+}
+
 .PawnDark {
+  transition: 0.5s;
   height: 70px;
   width: 70px;
-  background-color: rgb(75, 75, 75);
+  /* background-color: rgb(75, 75, 75); */
+  background-color: rgba(89, 72, 65, 1);
+  background-image: url("./img/checkerDark.svg");
+  background-size: cover;
+  background-position: center;
   border-radius: 50%;
+}
+.King{
+  background-image: none;
 }
 .dark.CanGo {
   background-color: rgba(39, 39, 39, 0.63);
