@@ -1,0 +1,58 @@
+.size {
+  height: 100px;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dark {
+  background-color: black;
+}
+.canGo {
+  background-color: brown;
+}
+.white {
+  background-color: white;
+}
+.PawnWhite {
+  transition: 0.5s;
+  height: 70px;
+  width: 70px;
+  /* background-color: rgb(255, 255, 255); */
+  background-color: rgba(215, 207, 202, 1);
+  background-image: url("/public/img/checkerWhite.svg");
+  background-position: center;
+  background-size: cover;
+  border-radius: 50%;
+}
+.PawnDark:hover,
+.PawnWhite:hover {
+  transform: scale3d(1.1, 1.1, 1.1);
+}
+
+.PawnDark {
+  transition: 0.5s;
+  height: 70px;
+  width: 70px;
+  /* background-color: rgb(75, 75, 75); */
+  background-color: #594841;
+  background-image: url("/public/img/checkerDark.svg");
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+}
+.King {
+  background-image: none;
+}
+.dark.canClick {
+  /* border-radius: 50%; */
+  /* background-color: rgba(0, 0, 0, 0.80); */
+  background-image: url("/public/img/dot.svg");
+  background-size: 70%;
+  background-position: center;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(5px);
+}
+/* .white.canClick {
+  background-color: rgba(0, 0, 255, 0.80);
+} */

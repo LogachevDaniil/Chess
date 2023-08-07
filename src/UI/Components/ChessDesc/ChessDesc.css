@@ -1,0 +1,13 @@
+.ChessDesc {
+  display: flex;
+  flex-wrap: wrap;
+  height: 800px;
+  width: 800px;
+  border: 1px solid #000;
+}
+.game {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  flex-direction: column;
+}
