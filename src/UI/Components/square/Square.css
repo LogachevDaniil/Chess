@@ -8,6 +8,9 @@
 .dark {
   background-color: black;
 }
+.canGo {
+  background-color: brown;
+}
 .white {
   background-color: white;
 }
@@ -17,13 +20,14 @@
   width: 70px;
   /* background-color: rgb(255, 255, 255); */
   background-color: rgba(215, 207, 202, 1);
-  background-image: url("./img/checkerWhite.svg");
+  background-image: url("/public/img/checkerWhite.svg");
   background-position: center;
   background-size: cover;
   border-radius: 50%;
 }
-.PawnDark:hover, .PawnWhite:hover{
-  transform: scale3d(1.1,1.1,1.1);
+.PawnDark:hover,
+.PawnWhite:hover {
+  transform: scale3d(1.1, 1.1, 1.1);
 }
 
 .PawnDark {
@@ -31,15 +35,24 @@
   height: 70px;
   width: 70px;
   /* background-color: rgb(75, 75, 75); */
-  background-color: rgba(89, 72, 65, 1);
-  background-image: url("./img/checkerDark.svg");
+  background-color: #594841;
+  background-image: url("/public/img/checkerDark.svg");
   background-size: cover;
   background-position: center;
   border-radius: 50%;
 }
-.King{
+.King {
   background-image: none;
 }
-.dark.CanGo {
-  background-color: rgba(39, 39, 39, 0.63);
+.dark.canClick {
+  /* border-radius: 50%; */
+  /* background-color: rgba(0, 0, 0, 0.80); */
+  background-image: url("/public/img/dot.svg");
+  background-size: 70%;
+  background-position: center;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(5px);
 }
+/* .white.canClick {
+  background-color: rgba(0, 0, 255, 0.80);
+} */

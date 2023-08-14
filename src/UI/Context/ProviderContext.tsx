@@ -5,43 +5,40 @@ import { arr } from "../Components/ChessDesc/ChessDesc";
 export const ProviderContext = createContext({} as IContext);
 
 export const ProviderContextWrapper: FC<IProps> = ({ children }) => {
-  //   const emptyArr: string[][] = Array.from(Array(8), () =>
-  //     new Array(8).fill("")
-  //   );
+
   const [arrayOfSquares, setArrayOfSquares] = useState<string[][]>(arr);
   const [active, setActive] = useState<boolean>(true);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [winOpen, setWinOpen] = useState<boolean>(false);
-  const [additionalMove, setAdditionalMove] = useState<boolean>(false);
   const [nextTurn, setNextTurn] = useState<boolean>(true);
-  const chengeAdditionalMove = () => {
-    setAdditionalMove(!additionalMove);
-  };
+  const [arrayCanGo, setArrCanGo] = useState<number[][]>([[0, 0, 0, 0]]);
+
+  //открытие модального окна (уведомление "не твой ход")
   const chengeModalActive = () => {
     setModalOpen(!modalOpen);
   };
+
+  //открытие модального окна окончания игры
   const chengeWinActive = () => {
     setWinOpen(!winOpen);
   };
+
+  //меняет пешку на активную
   const chengeActive = (activeType: boolean) => {
-    // activeType && setActive(!active);
-    // activeType && setNextTurn(!nextTurn);
-    // setActive(!active)
     if (!activeType) {
       setNextTurn(!nextTurn);
     } else {
       setActive(!active);
     }
-    // console.log(active);
   };
+
+  //следующий ход
   const chengeNextTurn = () => {
     setNextTurn(!nextTurn);
+    console.log(active);
   };
-  // const switchArrayOfSquares = (arr: string[][]) => {
-  //   setArrayOfSquares(arr);
-  //   console.log("hi from context");
-  // };
 
+  //меняет позицию шашки
   const chengePosition = (
     figureType: string,
     idy: number,
@@ -55,6 +52,16 @@ export const ProviderContextWrapper: FC<IProps> = ({ children }) => {
     console.log(arrayOfSquares);
   };
 
+  // меняет значение arrayCanGo
+  const chengeArrayCanGo = (arrCanGo: number[][]) => {
+    setArrCanGo(arrCanGo);
+  };
+
+  //применяет дефолтные значения к arrayCanGo
+  const chengeDefaultArrayCanGo = () => {
+    setArrCanGo([[-1, -1, -1, -1]]);
+  };
+
   const providerValue = {
     arrayOfSquares,
     chengePosition,
@@ -64,11 +71,13 @@ export const ProviderContextWrapper: FC<IProps> = ({ children }) => {
     chengeModalActive,
     winOpen,
     chengeWinActive,
-    additionalMove,
-    chengeAdditionalMove,
     nextTurn,
     chengeNextTurn,
+    arrayCanGo,
+    chengeArrayCanGo,
+    chengeDefaultArrayCanGo,
   };
+
   return (
     <ProviderContext.Provider value={providerValue}>
       {children}

@@ -12,8 +12,9 @@ export const arr: string[][] = Array.from(Array(8), () =>
 );
 
 export const ChessDesc = () => {
-  const { arrayOfSquares, nextTurn } = useContext(ProviderContext);
+  const { nextTurn, chengeNextTurn } = useContext(ProviderContext);
 
+  // console.log(arrayOfSquares);
   (() => {
     for (let i = 0; i < arr.length; i++) {
       for (let y = 0; y < arr[i].length; y++) {
@@ -31,13 +32,28 @@ export const ChessDesc = () => {
       }
     }
   })();
-  // console.log(arrayOfSquares);
-  useEffect(() => {}, [nextTurn]);
+
+  // chengeNextTurn();
+  // useEffect(() => {
+  //   for (let i = 0; i < arr.length; i++) {
+  //     for (let y = 0; y < arr[i].length; y++) {
+  //       arr[i][y] = "";
+  //     }
+  //   }
+  //   for (let i = 0; i < arrayOfChecker.length; i++) {
+  //     arr[arrayOfChecker[i].positionY][arrayOfChecker[i].positionX] =
+  //       arrayOfChecker[i].figureType;
+
+  //     if (arrayOfChecker[i].isKing === true) {
+  //       arr[arrayOfChecker[i].positionY][arrayOfChecker[i].positionX] =
+  //         arr[arrayOfChecker[i].positionY][arrayOfChecker[i].positionX] +
+  //         " King";
+  //     }
+  //   } // console.log("useEffect");
+  // }, [nextTurn]);
 
   return (
     <div className="game">
-      <TitleWhoseTurn />
-      <ModalWindow />
       <div className="ChessDesc">
         {arr.map((_, idy) =>
           arr[idy].map((_, idx) => (
@@ -53,8 +69,6 @@ export const ChessDesc = () => {
           ))
         )}
       </div>
-      <Card />
-      <Card1 />
     </div>
   );
 };

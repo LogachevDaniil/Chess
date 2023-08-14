@@ -24,9 +24,10 @@ interface IContext {
   chengeModalActive(): void;
   winOpen: boolean;
   chengeWinActive(): void;
-  additionalMove: boolean;
-  chengeAdditionalMove(): void;
   nextTurn: boolean;
   chengeNextTurn(): void;
+  arrayCanGo: number[][];
+  chengeArrayCanGo(arrCanGo: number[][]): void;
+  chengeDefaultArrayCanGo(): void;
 }
 export type { IProps, IContext };

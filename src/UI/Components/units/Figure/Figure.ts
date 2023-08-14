@@ -1,6 +1,6 @@
-import { ChessDesc } from "../../ChessDesc/ChessDesc";
+// import { ChessDesc } from "../../ChessDesc/ChessDesc";
 import { IFigureType } from "../interface/types";
-import { arr } from "../../ChessDesc/ChessDesc";
+// import { arr } from "../../ChessDesc/ChessDesc";
 export class Pawn {
   constructor(
     public figureType: IFigureType,
@@ -12,18 +12,17 @@ export class Pawn {
     public figureId: number
   ) {}
 
+  // передаем id и делаем фигурку активной
   activeFigure(figureId: number) {
-    // передаем id и делаем фигурку активной
     for (let i = 0; i < arrayOfChecker.length; i++) {
       if (arrayOfChecker[i].figureId === figureId) {
         arrayOfChecker[i].isActive = !arrayOfChecker[i].isActive;
       }
     }
-    // console.log(arrayOfChecker);
   }
 
+  // передаем id и новую пазицию фигурки для смена пазиции фигурки
   changePosition(figureId: number, newPositionY: number, newPositionX: number) {
-    // передаем id и новую пазицию фигурки
     for (let i = 0; i < arrayOfChecker.length; i++) {
       if (arrayOfChecker[i].figureId === figureId) {
         arrayOfChecker[i].positionX = newPositionX;
@@ -43,147 +42,144 @@ export class Pawn {
     }
   }
 
+  // делаем пешку дамкой
   beCrowned(figureId: number) {
     for (const checker of arrayOfChecker) {
       if (checker.figureId === figureId) {
         checker.isKing = true;
       }
     }
-    // console.log(arrayOfChecker);
   }
 
-  controlCanCheckerEatAgain(newPositionY: number, newPositionX: number) {
-    let arrOfEnemies = [];
-    let eater;
-    for (let index = 0; index < arrayOfChecker.length; index++) {
-      // const element = array[index];
-      if (
-        arrayOfChecker[index].positionY === newPositionY &&
-        arrayOfChecker[index].positionX === newPositionX
-      ) {
-        eater = arrayOfChecker[index];
-      }
-      if (
-        (arrayOfChecker[index].positionY - 1 === newPositionY &&
-          arrayOfChecker[index].positionX - 1 === newPositionX) ||
-        (arrayOfChecker[index].positionY + 1 === newPositionY &&
-          arrayOfChecker[index].positionX + 1 === newPositionX) ||
-        (arrayOfChecker[index].positionY + 1 === newPositionY &&
-          arrayOfChecker[index].positionX - 1 === newPositionX) ||
-        (arrayOfChecker[index].positionY - 1 === newPositionY &&
-          arrayOfChecker[index].positionX + 1 === newPositionX)
-      ) {
-        arrOfEnemies.push(arrayOfChecker[index]);
-      }
-    }
-    console.log(arrOfEnemies);
+  controlCanCheckerEatAgain() {
+    const activeChecker = arrayOfChecker.find(
+      (checker) => checker.isActive === true
+    );
+    const arrayOfEnemises = arrayOfChecker.filter(
+      (checker) =>
+        activeChecker &&
+        checker.figureType !== activeChecker?.figureType &&
+        Math.abs(checker.positionY - activeChecker.positionY) ===
+          Math.abs(checker.positionX - activeChecker.positionX) &&
+        activeChecker.positionY !== checker.positionY &&
+        activeChecker.positionX !== checker.positionX
+    );
 
-    let arrayOfVoid = [];
+    if (activeChecker) {
+      for (let i = 0; i < arrayOfEnemises.length; i++) {
+        let y = arrayOfEnemises[i].positionY - activeChecker.positionY;
+        let x = arrayOfEnemises[i].positionX - activeChecker.positionX;
+        let firstChecker = arrayOfChecker.find(
+          (checker) =>
+            checker.positionY === activeChecker.positionY + y &&
+            checker.positionX === activeChecker.positionX + x
+        );
+        console.log(activeChecker.positionY + y, activeChecker.positionX + x);
+        if (y < 0) {
+          y--;
+        } else {
+          y++;
+        }
+        if (x < 0) {
+          x--;
+        } else {
+          x++;
+        }
 
-    for (let indexE = 0; indexE < arrOfEnemies.length; indexE++) {
-      for (let iC = 0; iC < arrayOfChecker.length; iC++) {
-        if (eater && arrOfEnemies[0]) {
-          let y = (arrOfEnemies[indexE].positionY - eater?.positionY) * 2;
-          let x = (arrOfEnemies[indexE].positionX - eater?.positionX) * 2;
-          if ( arrayOfChecker[iC].figureType !== eater.figureType &&
-            arrayOfChecker[iC].positionY === eater.positionY + y &&
-            arrayOfChecker[iC].positionX === eater.positionX + x
-          ) {
-            console.log(arrayOfChecker[iC]);
-            console.log(arrOfEnemies[iC]);
-
-            arrayOfVoid.push(arrOfEnemies[indexE]);
-          }
+        const secondChecker = arrayOfChecker.find(
+          (checker) =>
+            checker.positionY === activeChecker.positionY + y &&
+            checker.positionX === activeChecker.positionX + x
+        );
+        if (
+          activeChecker.positionY + y >= 0 &&
+          activeChecker.positionY + y <= 7 &&
+          activeChecker.positionX + x >= 0 &&
+          activeChecker.positionX + x <= 7 &&
+          secondChecker === undefined &&
+          firstChecker
+        ) {
+          activeChecker.canEatAgain = true;
+          return;
+        } else {
+          activeChecker.canEatAgain = false;
         }
       }
     }
-    console.log(arrayOfVoid[0]);
-    console.log(arrayOfVoid);
-    
-    console.log(arrOfEnemies);
-
-    if (
-      arrayOfVoid[0] !== undefined &&
-      arrayOfVoid.length !== arrOfEnemies.length &&
-      eater
-    ) {
-      console.log(123);
-
-      eater.canEatAgain = true;
-      return true;
-    }
-    if (arrayOfVoid[0] === undefined) {
-      for (let i = 0; i < arrayOfChecker.length; i++) {
-        arrayOfChecker[i].canEatAgain = false;
-      }
-      return;
-    }
-    console.log(arrayOfChecker);
   }
+
+  // проверка на наличие врага в промежутке
   universalControlIsCheckerHere(
+    //эта тварина будет переписана(или нет)
     positionY: number,
     positionX: number,
     newPositionY: number,
     newPositionX: number
   ) {
     // передаем старую и новую позицию, возвращаем id фигурки которая находится между ними
+    const activeChecker = arrayOfChecker.find(
+      (checker) =>
+        checker.positionY === positionY && checker.positionX === positionX
+    );
+    if (
+      Math.abs(newPositionY - positionY) ===
+        Math.abs(newPositionX - positionX) &&
+      newPositionY !== positionY &&
+      newPositionX !== positionX &&
+      activeChecker
+    ) {
+      let distinctionY = newPositionY - positionY;
+      let distinctionX = newPositionX - positionX;
+      const difference = distinctionX;
+      const arrOfVictim1 = [];
 
-    let minY = Math.min(positionY, newPositionY);
-    let maxY = Math.max(positionY, newPositionY);
-    let minX = Math.min(positionX, newPositionX);
-    let forPerem = maxY - minY;
-    let arrOfVictim = []; //массив жертв
-    for (let index = 1; index < forPerem; index++) {
-      minY++;
-      minX++;
-      // console.log(minY, minX);
-      for (let i = 0; i < arrayOfChecker.length; i++) {
-        if (
-          arrayOfChecker[i].positionY === minY &&
-          arrayOfChecker[i].positionX === minX
-        ) {
-          // console.log(arrayOfChecker[i]);
-          arrOfVictim.push(arrayOfChecker[i]);
+      for (let i = 0; i < Math.abs(difference); i++) {
+        distinctionX > 0 ? distinctionX-- : distinctionX++;
+        distinctionY > 0 ? distinctionY-- : distinctionY++;
+        if (distinctionY && distinctionX) {
+          const foundedChecker = arrayOfChecker.find(
+            (checker) =>
+              checker.positionY === distinctionY + positionY &&
+              checker.positionX === distinctionX + positionX
+          );
+          if (
+            foundedChecker &&
+            foundedChecker.figureType !== activeChecker.figureType
+          ) {
+            arrOfVictim1.push(foundedChecker);
+          }
         }
       }
-      if (arrOfVictim.length === 1) {
-        return arrOfVictim[0].figureId;
+      if (arrOfVictim1.length === 1) {
+        return arrOfVictim1[0].figureId;
       } else return undefined;
-      // console.log(arrayOfChecker);
     }
-    // this.controlCanCheckerEatAgain(newPositionY, newPositionX, eaterId);
   }
 
+  // проверка на победу(остались ли пешки противоположной команде)
   isWin(figureType: IFigureType) {
-    // console.log(arrayOfChecker);
     let arrayOfOponents = [];
     for (let i = 0; i < arrayOfChecker.length; i++) {
-      // const element = array[i];
-      if (arrayOfChecker[i].figureType === figureType) {
+      if (arrayOfChecker[i].figureType !== figureType) {
         arrayOfOponents.push(arrayOfChecker[i]);
       }
     }
-    // const arrayOfOponents = arrayOfChecker.find(
-    //   (checker) => checker.figureType === figureType
-    // );
-    // console.log(figureType);
-    // console.log(arrayOfOponents);
-
     if (!arrayOfOponents[0]) {
-      console.log(figureType + " wins");
+      if (figureType === "PawnDark" || figureType === "PawnDarkKing") {
+        console.log("PawnWhite wins");
+        return true;
+      } else {
+        console.log("PawnDark wins");
+        return true;
+      }
     }
-    // else console.log("не wins(");
   }
 
   eatFigure(figureId: number | undefined) {
-    //не помню зачем тут undef, но если он есть то от нужен
     //передаем id и удаляем из массива эту пешку
-    let delitedChecker;
-    if (figureId !== undefined) {
-      delitedChecker = arrayOfChecker.find(
-        (checker) => checker.figureId === figureId
-      );
-    }
+    const delitedChecker = arrayOfChecker.find(
+      (checker) => checker.figureId === figureId
+    );
     const temporarryArr = [];
     for (let i = 0; i < arrayOfChecker.length; i++) {
       if (arrayOfChecker[i].figureId === figureId) delete arrayOfChecker[i];
@@ -193,62 +189,53 @@ export class Pawn {
       arrayOfChecker[i] = temporarryArr[i];
     }
     arrayOfChecker = arrayOfChecker.filter((pawn) => pawn !== undefined);
-    // console.log(arrayOfChecker);
     if (delitedChecker?.figureType) {
       this.isWin(delitedChecker?.figureType);
     }
   }
 }
 
-// (() => {
-
-// })()
-
 export let arrayOfChecker: Pawn[] = []; //расставляем пешки
 
-// arrayOfChecker.push(new Pawn("PawnDark", 5, 6, false, false, false, 1));
-// arrayOfChecker.push(new Pawn("PawnDark", 3, 4, false, false, false, 2));
-// arrayOfChecker.push(new Pawn("PawnWhite", 6, 7, false, false, false, 3));
-(() => {
-  let x = 1;
-  let lineY = 0;
-  let lineX = 0;
-  let color = "PawnDark";
-  for (let i = 0; i < 24; i++, x = x + 2) {
-    if (i < 12) {
-      if (i < 4) {
-        lineX = x;
-      } else if (i > 3 && i <= 7) {
-        lineY = 1;
-        lineX = x - 9;
-      } else {
-        lineY = 2;
-        lineX = x - 16;
-      }
-    } else {
-      color = "PawnWhite";
-      if (i < 16) {
-        lineX = x - 25;
-        lineY = 7;
-      } else if (i > 15 && i <= 19) {
-        lineY = 6;
-        lineX = x - 32;
-      } else {
-        lineY = 5;
-        lineX = x - 41;
-      }
-    }
-    arrayOfChecker.push(
-      new Pawn(color as IFigureType, lineY, lineX, false, false, false, i)
-    );
-  }
-})();
+arrayOfChecker.push(new Pawn("PawnDark", 4, 1, false, false, false, 0));
+arrayOfChecker.push(new Pawn("PawnDark", 0, 1, false, false, false, 3));
+arrayOfChecker.push(new Pawn("PawnDark", 5, 2, false, false, false, 5));
+arrayOfChecker.push(new Pawn("PawnDark", 0, 5, false, false, false, 4));
+arrayOfChecker.push(new Pawn("PawnDark", 3, 4, false, false, false, 1));
+arrayOfChecker.push(new Pawn("PawnWhite", 5, 6, false, true, false, 2));
+// (() => {
+//   let x = 1;
+//   let lineY = 0;
+//   let lineX = 0;
+//   let color = "PawnDark";
+//   for (let i = 0; i < 24; i++, x = x + 2) {
+//     if (i < 12) {
+//       if (i < 4) {
+//         lineX = x;
+//       } else if (i > 3 && i <= 7) {
+//         lineY = 1;
+//         lineX = x - 9;
+//       } else {
+//         lineY = 2;
+//         lineX = x - 16;
+//       }
+//     } else {
+//       color = "PawnWhite";
+//       if (i < 16) {
+//         lineX = x - 25;
+//         lineY = 7;
+//       } else if (i > 15 && i <= 19) {
+//         lineY = 6;
+//         lineX = x - 32;
+//       } else {
+//         lineY = 5;
+//         lineX = x - 41;
+//       }
+//     }
+//     arrayOfChecker.push(
+//       new Pawn(color as IFigureType, lineY, lineX, false, false, false, i)
+//     );
+//   }
+// })();
 
-export const pawn1 = new Pawn("PawnDark", 0, 1, false, true, false, 0);
-
-// export const pawn2 = new Pawn("PawnWhite", 7, 4, false, 1);
-// export const pawn3 = new Pawn("PawnWhite", 7, 2, false, 2);
-// export const pawn4 = new Pawn("PawnWhite", 7, 0, false, 3);
-// export const pawn5 = new Pawn("PawnDark", 0, 3, false, 4);
-
-// export let arrayOfChecker:Pawn[] = [pawn1, pawn2, pawn3, pawn4, pawn5]
+export const pawn1 = new Pawn("PawnDark", 0, 1, false, true, false, -1);
